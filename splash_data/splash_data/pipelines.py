@@ -5,21 +5,21 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 from scrapy.exceptions import DropItem
-import sqlite3
+import sqlite3, re, requests
 
 
 class Sqlite3Database(object):
     def open_spider(self, spider):
-        db_file = spider.name
-        post = {'title': "标题", 'item_code': "编号", 'web_code': '网站编号',
-                'end': '时间', 'period': '借款期限', 'typeimg': '类型图片',
-                'posttype': '回复类型', 'invest_records': '回复内容', 'amount': '借款金额',
-                'rate': '年利率', 'start': '发标时间', 'loaner_info': '作者',
+        db_file = spider.name + '.db3'
+        post = {'title': "title", 'borrowid': "item_code", 'siteid': 'web_code',
+                'lastpostdate': 'end', 'daystr': 'period', 'typeimg': '类型图片',
+                'posttype': '回复类型', 'postdata': 'invest_records', 'money': 'amount',
+                'rate': 'rate', 'senddate': 'start', 'username': 'loaner_info',
                 'jiangli': '投标奖励', 'jianglimoney': '奖励金额', 'ratetype': '利率类型',
-                'pay_type': '还款方式', 'url': '网址', 'sex': '性别',
-                'age': '年龄', 'industry': '所属行业', 'df': '所在地',
-                'organization': '发布机构', 'loan_using': '借款用途',
-                'borrower_type': '借款类别', 'loan_info': '借款详情', }
+                'repayment_type': 'pay_type', 'borrow_url': 'url', 'sex': '性别',
+                'age': '年龄', 'industry': '所属行业', 'df': '所在地', 'organization': '发布机构',
+                'borrow_use': 'loan_using', 'borrower_type': '借款类别',
+                'borrow_info': 'loan_info', 'progress': 'progress', 'web_name': 'web_name'}
         print('''start initialize database: ''', db_file)
         conn = sqlite3.connect(db_file)
         db = conn.cursor()
@@ -36,8 +36,60 @@ class Sqlite3Database(object):
                 'CREATE TABLE Content(ID INTEGER PRIMARY KEY AUTOINCREMENT,已采 TINYINT(1),已发 TINYINT(1){})'.format(v))
         else:
             print('already exist table: Content in ', db_file)
+        spider.conn = conn
+
+    def close_spider(self, spider):
+        post = {'title': "title",
+                'borrowid': "item_code",
+                'siteid': 'web_code',
+                'lastpostdate': 'end',
+                'daystr': 'period',
+                'typeimg': '类型图片',
+                'posttype': '回复类型',
+                'postdata': 'invest_records',
+                'money': 'amount',
+                'rate': 'rate',
+                'senddate': 'start',
+                'username': 'loaner_info',
+                'jiangli': '投标奖励',
+                'jianglimoney': '奖励金额',
+                'ratetype': '利率类型',
+                'repayment_type': 'pay_type',
+                'borrow_url': 'url',
+                'sex': '性别',
+                'age': '年龄',
+                'industry': '所属行业',
+                'df': '所在地',
+                'organization': '发布机构',
+                'borrow_use': 'loan_using',
+                'borrower_type': '借款类别',
+                'borrow_info': 'loan_info', }
+        reg = re.compile('ok')
+        post_uri = 'http://101.201.75.34/curl/insert.php'
+        colculmus = ','.join(post.values())
+        conn = spider.conn
+        db = conn.cursor()
+        db.execute('''SELECT {} FROM Content WHERE 已发 is null '''.format(colculmus, ))
+        # print(db.fetchall())
+        lst = db.fetchall()
+        if not lst:
+            print('Need post data is 0')
+        else:
+            for postval in lst:
+                publish_data = dict(zip(post.keys(), postval))
+                # print(publish_data)
+                rr = requests.post(post_uri, data=publish_data)
+                if re.search(reg, rr.text):
+                    print(publish_data['title'], ' issued successfull')
+                    db.execute('''UPDATE Content SET 已发=1 WHERE item_code="{}"'''.format(
+                        publish_data['borrowid']))
+                else:
+                    print(publish_data['title'], ' issued failed')
+                    db.execute('''UPDATE Content SET 已发=2 WHERE item_code="{}"'''.format(
+                        publish_data['borrowid']))
         conn.commit()
         conn.close()
+        print("close database------------------------")
 
 
 class Rate(object):
@@ -62,5 +114,30 @@ class NecessaryData(object):
             raise DropItem("Missing start in %s" % item)
         elif not item['end']:
             raise DropItem("Missing end in %s" % item)
+        elif item['progress'] != "100.00%":
+            raise DropItem("progress is not 100% in %s" % item)
         else:
             return item
+
+
+class SaveData(object):
+    def process_item(self, item, spider):
+        conn = spider.conn
+        db = conn.cursor()
+        dic = item
+        columns = ', '.join(dic.keys())
+        value = (', ?' * len(dic.keys())).strip(', ')
+        s = 'select * from Content where item_code="%s"' % dic['item_code']
+        db.execute(s)
+        lst = db.fetchall()
+        if len(lst) == 0:
+            statement = 'insert into Content({}) values ({})'.format(columns, value)
+            db.execute(statement, tuple(dic.values()))
+            print(dic['title'], ' is done')
+        else:
+            print(dic['title'], ' 已经采集过')
+
+
+class Publish34(object):
+    def close_spider(self, spider):
+        pass

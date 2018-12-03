@@ -23,6 +23,7 @@ ITEM_PIPELINES = {
     'splash_data.pipelines.Sqlite3Database': 100,
     'splash_data.pipelines.Rate': 700,
     'splash_data.pipelines.NecessaryData': 800,
+    'splash_data.pipelines.SaveData': 850,
 }
 
 DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
@@ -40,6 +41,7 @@ NEWSPIDER_MODULE = 'splash_data.spiders'
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 FEED_EXPORT_ENCODING = 'utf-8'
+LOG_ENABLED = False
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
 

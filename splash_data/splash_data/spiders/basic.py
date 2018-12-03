@@ -46,7 +46,7 @@ class BasicSpider(scrapy.Spider):
             yield SplashRequest(url, self.parse, endpoint='execute',
                                 args={
                                     'lua_source': lua_splash,
-                                    'page_num': 1,
+                                    'page_num': 3,
                                     'next_selector': '.js-page-next.js-page-action.ui-pager',
                                     'selector': ".gray",
                                     'href_pattern': 'id=(.*)$',
@@ -100,7 +100,7 @@ class BasicSpider(scrapy.Spider):
             try:
                 url_str = response.url
                 code_str = re.findall('id=(.*?)$', url_str)
-                return web_name + code_str[0]
+                return web_name + "-" + code_str[0]
             except Exception:
                 return None
 

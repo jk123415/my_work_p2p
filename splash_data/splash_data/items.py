@@ -21,6 +21,7 @@ loan_info
 progress
 invest_records
 pay_type
+progress
 '''
 
 
@@ -83,4 +84,3 @@ class SplashDataItem(scrapy.Item):
     url = scrapy.Field(output_processor=Join())
     web_code = scrapy.Field(output_processor=Join())
     item_code = scrapy.Field(output_processor=Join())
-    pass
