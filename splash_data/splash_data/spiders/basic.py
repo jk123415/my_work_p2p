@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import scrapy
+import scrapy, re
 from scrapy_splash import SplashRequest
 from splash_data.items import SplashDataItem
 from scrapy.loader import ItemLoader
@@ -81,15 +81,44 @@ class BasicSpider(scrapy.Spider):
             invest_records = ""
             try:
                 for record in invest_records_data:
-                    invest_records += "{{name={ls[0]}|amount={ls[1]}}}".format(ls=record)
+                    invest_records += "{{username={ls[0]}|rate=-1|postmoney={ls[1]}|money={ls[1]}|postdate={ls[2]}|status=全部通过}}".format(
+                        ls=record)
             except Exception:
                 invest_records = None
             return invest_records
 
+        def time_handle():
+            if invest_records_data:
+                start_time = invest_records_data[start[0]][start[1]]
+                end_time = invest_records_data[end[0]][end[1]]
+                result_time = (start_time, end_time)
+            else:
+                result_time = (None, None)
+            return result_time
+
+        def item_code_handle():
+            try:
+                url_str = response.url
+                code_str = re.findall('id=(.*?)$', url_str)
+                return web_name + code_str[0]
+            except Exception:
+                return None
+
+        web_name = '富民商贷'
+        web_code = '7734'
+        start = (0, 2)
+        end = (-1, 2)
         invest_records_data = invest_records(response.css('#invest_record'))
         invest_record_str = invest_p2p()
+        print(invest_records_data)
+        time_value = time_handle()
+        item_code = item_code_handle()
         # '''
         entry = ItemLoader(item=SplashDataItem(), response=response)
+        entry.add_value('web_name', web_name)
+        entry.add_value('web_code', web_code)
+        entry.add_value('url', response.url)
+        entry.add_value('item_code', item_code)
         entry.add_css('title', '#item_name')
         entry.add_css('amount', '.borrow_money::text')
         entry.add_css('rate', '.fontColor.borrow_interest_rate')
@@ -97,7 +126,11 @@ class BasicSpider(scrapy.Spider):
         entry.add_css('start', '.add_time')
         entry.add_css('loan_info', '.borrow_info')
         entry.add_css('progress', '.fl.progress')
+        # entry.add_value('invest_records_mate', invest_records_data)
         entry.add_value('invest_records', invest_record_str)
+        entry.add_value('start', time_value[0])
+        entry.add_value('end', time_value[1])
+        entry.add_value('pay_type', '0')
         # entry.add_value('code', response.body)
         return entry.load_item()
         # '''

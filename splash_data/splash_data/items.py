@@ -10,6 +10,19 @@ from w3lib.html import remove_tags
 from scrapy.loader.processors import Join, MapCompose, TakeFirst
 from scrapy.selector import Selector
 
+'''
+title
+amount
+rate
+period
+start
+end
+loan_info
+progress
+invest_records
+pay_type
+'''
+
 
 # 两个默认参数selector_1:条目选择器；selector_2:具体数据文本选择器
 def invest_records(value, selector_1='tr', selector_2='td::text'):
@@ -66,4 +79,8 @@ class SplashDataItem(scrapy.Item):
     code = scrapy.Field(
         input_processor=MapCompose(remove_tags),
         output_processor=Join(), )
+    web_name = scrapy.Field(output_processor=Join())
+    url = scrapy.Field(output_processor=Join())
+    web_code = scrapy.Field(output_processor=Join())
+    item_code = scrapy.Field(output_processor=Join())
     pass
