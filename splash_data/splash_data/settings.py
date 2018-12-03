@@ -20,6 +20,7 @@ SPIDER_MIDDLEWARES = {
 }
 
 ITEM_PIPELINES = {
+    'splash_data.pipelines.Sqlite3Database': 100,
     'splash_data.pipelines.Rate': 700,
     'splash_data.pipelines.NecessaryData': 800,
 }

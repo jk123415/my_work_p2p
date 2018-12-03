@@ -110,7 +110,6 @@ class BasicSpider(scrapy.Spider):
         end = (-1, 2)
         invest_records_data = invest_records(response.css('#invest_record'))
         invest_record_str = invest_p2p()
-        print(invest_records_data)
         time_value = time_handle()
         item_code = item_code_handle()
         # '''
@@ -126,11 +125,9 @@ class BasicSpider(scrapy.Spider):
         entry.add_css('start', '.add_time')
         entry.add_css('loan_info', '.borrow_info')
         entry.add_css('progress', '.fl.progress')
-        # entry.add_value('invest_records_mate', invest_records_data)
         entry.add_value('invest_records', invest_record_str)
         entry.add_value('start', time_value[0])
         entry.add_value('end', time_value[1])
         entry.add_value('pay_type', '0')
-        # entry.add_value('code', response.body)
         return entry.load_item()
         # '''
