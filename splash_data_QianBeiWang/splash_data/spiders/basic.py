@@ -3,6 +3,7 @@ import scrapy, re
 from scrapy_splash import SplashRequest
 from splash_data.items import SplashDataItem
 from scrapy.loader import ItemLoader
+from scrapy.exceptions import DropItem
 
 lua_splash = '''
 function main(splash, args)
@@ -15,20 +16,18 @@ function main(splash, args)
   page_num = args.page_num
   --body
   splash:go(args.url)
+  splash:wait(1)
+  local element = splash:select(args.selector_all)
+  element:mouse_click{}
   splash:wait(2)
-  for i=1,page_num,1 do
-  local element = splash:select_all(selector)
-  for key,value in ipairs(element) do
+  local element_url = splash:select_all(selector)
+  for key,value in ipairs(element_url) do
     local href = value.node.attributes.href
     local _,_,u = string.find(href,href_pattern)
     table.insert (urls, u)
   end
-  next_element = splash:select(next_selector)
-  next_element:mouse_click{}
-  splash:wait(1)
-  end
   return {
-    html = splash:html(),
+    --html = splash:html(),
     --png = splash:png(),
     --har = splash:har(),
     urls = table.concat(urls," ")
@@ -38,35 +37,75 @@ end
 
 
 class BasicSpider(scrapy.Spider):
-    name = 'basic'
-    start_urls = ['https://www.fmshang.com/invest.html']
+    name = 'QBW'
+    start_urls = ['http://www.qianbeimoney.com/newInvest/4']
 
     def start_requests(self):
         for url in self.start_urls:
             yield SplashRequest(url, self.parse, endpoint='execute',
                                 args={
                                     'lua_source': lua_splash,
-                                    'page_num': 3,
-                                    'next_selector': '.js-page-next.js-page-action.ui-pager',
-                                    'selector': ".gray",
-                                    'href_pattern': 'id=(.*)$',
+                                    'page_num': 1,
+                                    'selector_all': 'div.xmqixian00 div:nth-child(2)',
+                                    'selector': ".ljjr1",
+                                    'href_pattern': 'invest/(.*)/$',
                                 }
                                 )
 
     def parse(self, response):
-        string = "https://www.fmshang.com/project/detail.html?id="
+        string = "http://www.qianbeimoney.com/front/invest/{}/"
         try:
             lst = response.data['urls'].split(" ")
             for i in lst:
-                entry_url = string + i
+                entry_url = string.format(i)
                 print("start get: ", entry_url)
-                yield SplashRequest(entry_url, self.entry_parse, args={"wait": 5})
+                yield scrapy.Request(entry_url, callback=self.public_info_parse)
         except Exception:
             pass
         else:
             pass
 
+    def public_info_parse(self, response):
+        title = response.css('.asfw::text').extract_first()
+        rate = response.css('.uyasw span::text').extract_first()
+        period = response.css('.adbhu *::text').extract_first()
+        remainder_amount = response.css('.bdja span::text').extract_first()
+        invest_records_url = 'http://www.qianbeimoney.com/front/invest/ajaxInvestHis'
+        if remainder_amount != '0':
+            print(title, ' is not done')
+            raise DropItem()
+        else:
+            formdata = {"Page": '1', "bid": '8'}
+            request_1 = scrapy.FormRequest(invest_records_url, formdata=formdata, callback=self.invest_records_page_num)
+            item = {}
+            item['title'] = title
+            item['rate'] = rate
+            item['period'] = period + '个月'
+            request_1.meta['item'] = item
+            yield request_1
+
+    def invest_records_page_num(self, response):
+        item = response.meta['item']
+
+        try:
+            page_num = response.css('.pageDivClass::text').extract_first()
+            num_str = re.findall('共(.*?)页', page_num)[0]
+            num = int(num_str) + 1
+        except Exception:
+            print(item['title'], '-投资记录页数提取出错')
+            raise DropItem()
+        else:
+            formdata = {"Page": None, "bid": '8'}
+            invest_records_url = 'http://www.qianbeimoney.com/front/invest/ajaxInvestHis'
+            for i in range(0, num):
+                formdata['Page'] = str(i)
+                request_2 = scrapy.FormRequest(invest_records_url, formdata=formdata, callback=self.entry_parse)
+                request_2.meta['item'] = item
+                yield request_2
+
     def entry_parse(self, response):
+        public_data = response.meta['item']
+
         # 从表中提取投资记录列表
         # 两个默认参数selector_1:条目选择器；selector_2:具体数据文本选择器
         def invest_records(selector, selector_1='tr', selector_2='td::text'):
@@ -98,36 +137,33 @@ class BasicSpider(scrapy.Spider):
 
         def item_code_handle():
             try:
-                url_str = response.url
-                code_str = re.findall('id=(.*?)$', url_str)
-                return web_name + "-" + code_str[0]
+                url_str = invest_records_data[0][0]
+                return public_data['title'] + "-" + url_str
             except Exception:
                 return None
 
-        web_name = '富民商贷'
-        web_code = '7734'
+        web_name = '钱贝网智投'
+        web_code = '8191'
         start = (0, 2)
-        end = (-1, 2)
-        invest_records_data = invest_records(response.css('#invest_record'))
-        invest_record_str = invest_p2p()
-        time_value = time_handle()
-        item_code = item_code_handle()
+        end = (0, 2)
+        invest_records_data = invest_records(response.css('table'))
+        # invest_record_str = invest_p2p()
+        # item_code = item_code_handle()
         # '''
-        entry = ItemLoader(item=SplashDataItem(), response=response)
-        entry.add_value('web_name', web_name)
-        entry.add_value('web_code', web_code)
-        entry.add_value('url', response.url)
-        entry.add_value('item_code', item_code)
-        entry.add_css('title', '#item_name')
-        entry.add_css('amount', '.borrow_money::text')
-        entry.add_css('rate', '.fontColor.borrow_interest_rate')
-        entry.add_css('period', '.borrow_duration')
-        entry.add_css('start', '.add_time')
-        entry.add_css('loan_info', '.borrow_info')
-        entry.add_css('progress', '.fl.progress')
-        entry.add_value('invest_records', invest_record_str)
-        entry.add_value('start', time_value[0])
-        entry.add_value('end', time_value[1])
-        entry.add_value('pay_type', '0')
-        return entry.load_item()
+        for n in invest_records_data:
+            time_value = n[2]
+            item_code = public_data['title'] + '-' + n[0]
+            entry = ItemLoader(item=SplashDataItem(), response=response)
+            entry.add_value('web_name', web_name)
+            entry.add_value('web_code', web_code)
+            entry.add_value('url', response.url)
+            entry.add_value('item_code', item_code)
+            entry.add_value('title', public_data['title'])
+            entry.add_value('amount', n[3])
+            entry.add_value('rate', public_data['rate'])
+            entry.add_value('period', public_data['period'])
+            entry.add_value('start', time_value)
+            entry.add_value('end', time_value)
+            entry.add_value('pay_type', '0')
+            yield entry.load_item()
         # '''

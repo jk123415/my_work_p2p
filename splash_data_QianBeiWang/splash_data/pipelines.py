@@ -114,8 +114,6 @@ class NecessaryData(object):
             raise DropItem("Missing start in %s" % item)
         elif not item['end']:
             raise DropItem("Missing end in %s" % item)
-        elif item['progress'] != "100.00%":
-            raise DropItem("progress is not 100% in %s" % item)
         else:
             return item
 

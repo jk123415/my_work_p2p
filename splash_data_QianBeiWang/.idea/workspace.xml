@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b6659533-be4a-49a2-ad41-d305581451dd" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../splash_data/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../splash_data/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basic.db3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jj.jl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/splash_data/pipelines.py" beforeDir="false" afterPath="$PROJECT_DIR$/splash_data/pipelines.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splash_data/spiders/basic.py" beforeDir="false" afterPath="$PROJECT_DIR$/splash_data/spiders/basic.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -100,9 +105,55 @@
         </counts>
       </usages-collector>
     </session>
+    <session id="1342932563">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.open.time.0" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="py" value="8" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="Python" value="8" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="py" value="1192" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="Python" value="1192" />
+        </counts>
+      </usages-collector>
+    </session>
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/splash_data/spiders/basic.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="243">
+              <caret line="75" column="26" selection-start-line="75" selection-start-column="26" selection-end-line="75" selection-end-column="26" />
+              <folding>
+                <element signature="e#24#41#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>this</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -113,8 +164,8 @@
         <option value="$PROJECT_DIR$/splash_data/spiders/invest_records" />
         <option value="$PROJECT_DIR$/splash_data/items.py" />
         <option value="$PROJECT_DIR$/splash_data/pipelines.py" />
-        <option value="$PROJECT_DIR$/splash_data/spiders/basic.py" />
         <option value="$PROJECT_DIR$/splash_data/settings.py" />
+        <option value="$PROJECT_DIR$/splash_data/spiders/basic.py" />
       </list>
     </option>
   </component>
@@ -124,9 +175,9 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
-    <option name="x" value="119" />
-    <option name="y" value="102" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="98" />
+    <option name="y" value="334" />
     <option name="width" value="1109" />
     <option name="height" value="588" />
   </component>
@@ -140,8 +191,19 @@
         <subPane>
           <expand>
             <path>
-              <item name="splash_data" type="b2602c69:ProjectViewProjectNode" />
+              <item name="splash_data_QianBeiWang" type="b2602c69:ProjectViewProjectNode" />
+              <item name="splash_data_QianBeiWang" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="splash_data_QianBeiWang" type="b2602c69:ProjectViewProjectNode" />
+              <item name="splash_data_QianBeiWang" type="462c0819:PsiDirectoryNode" />
               <item name="splash_data" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="splash_data_QianBeiWang" type="b2602c69:ProjectViewProjectNode" />
+              <item name="splash_data_QianBeiWang" type="462c0819:PsiDirectoryNode" />
+              <item name="splash_data" type="462c0819:PsiDirectoryNode" />
+              <item name="spiders" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -243,9 +305,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="119" y="102" width="1109" height="588" extended-state="1" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3832221" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13691376" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -259,7 +322,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32569557" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.3289689" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.7283142" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.7250409" />
       <window_info anchor="bottom" id="Python Console" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -312,13 +375,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/splash_data/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="785">
-          <caret line="58" column="45" lean-forward="true" selection-start-line="58" selection-start-column="45" selection-end-line="58" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/splash_data/items.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="844">
@@ -326,17 +382,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/splash_data/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="456">
+          <caret line="26" column="1" lean-forward="true" selection-start-line="26" selection-start-column="1" selection-end-line="26" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/splash_data/pipelines.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1870">
-          <caret line="93" lean-forward="true" selection-start-line="93" selection-end-line="93" />
+        <state relative-caret-position="131">
+          <caret line="100" lean-forward="true" selection-start-line="100" selection-end-line="100" />
+          <folding>
+            <element signature="e#193#231#0" expanded="true" />
+            <element signature="e#298#3977#0" />
+            <element signature="e#4004#4193#0" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/splash_data/spiders/basic.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="14" column="26" lean-forward="true" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
+        <state relative-caret-position="243">
+          <caret line="75" column="26" selection-start-line="75" selection-start-column="26" selection-end-line="75" selection-end-column="26" />
+          <folding>
+            <element signature="e#24#41#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
