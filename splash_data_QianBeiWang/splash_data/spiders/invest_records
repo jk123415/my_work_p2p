@@ -1,0 +1,34 @@
+# -*- coding: utf-8 -*-
+from scrapy.selector import Selector
+
+
+# 两个默认参数selector_1:条目选择器；selector_2:具体数据文本选择器
+def invest_records(table, selector_1='tr', selector_2='td::text'):
+    inv_rec = Selector(text=table)
+    lst_tr = inv_rec.css(selector_1)
+    result = list()
+    for i in lst_tr:
+        text = i.css(selector_2).extract()
+        if text: result.append(text)
+    return result
+
+
+if __name__ == "__main__":
+    string = '''<table border="1" width="750" id="invest_record">
+            <thead>
+                <tr><th>投标人</th>
+                <th>投标金额</th>
+                <th>投标时间</th>
+                <th>投标方式</th>
+            </tr></thead>
+
+            <tbody><tr>
+                <td>张**</td>
+                <td>200000.00</td>
+                <td>2018-11-27 15:04:37</td>
+                <td>手动</td>
+            </tr>
+
+        </tbody></table>
+    '''
+    print(invest_records(string))
