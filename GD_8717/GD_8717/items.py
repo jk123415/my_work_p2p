@@ -5,10 +5,11 @@
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/items.html
 
-import scrapy
+import scrapy, re
 from w3lib.html import remove_tags
 from scrapy.loader.processors import Join, MapCompose, TakeFirst
 from scrapy.selector import Selector
+
 
 class Gd8717Item(scrapy.Item):
     # define the fields for your item here like:

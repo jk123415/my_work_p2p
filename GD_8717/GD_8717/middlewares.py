@@ -6,6 +6,8 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+from scrapy.exceptions import IgnoreRequest
+from pymongo import MongoClient
 
 
 class Gd8717SpiderMiddleware(object):
@@ -69,6 +71,15 @@ class Gd8717DownloaderMiddleware(object):
         return s
 
     def process_request(self, request, spider):
+        client = MongoClient(host='127.0.0.1', port=27017)
+        collection = client.p2p.p8717
+        url = request.url
+        conti = collection.find_one({'url': url})
+        if not conti:
+            return None
+        else:
+            print(url, "--已经采集过")
+            raise IgnoreRequest
         # Called for each request that goes through the downloader
         # middleware.
 
@@ -78,7 +89,6 @@ class Gd8717DownloaderMiddleware(object):
         # - or return a Request object
         # - or raise IgnoreRequest: process_exception() methods of
         #   installed downloader middleware will be called
-        return None
 
     def process_response(self, request, response, spider):
         # Called with the response returned from the downloader.
