@@ -58,3 +58,5 @@ class Gd8717Item(scrapy.Item):
     url = scrapy.Field(output_processor=Join())
     web_code = scrapy.Field(output_processor=Join())
     item_code = scrapy.Field(output_processor=Join())
+    a = scrapy.Field()
+    b = scrapy.Field()

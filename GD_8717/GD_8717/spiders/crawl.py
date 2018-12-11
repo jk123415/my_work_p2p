@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy, re
-from scrapy.spiders import CrawlSpider, Rule
+from scrapy.spiders import Spider, Rule
 from scrapy.linkextractors import LinkExtractor
 from GD_8717.items import Gd8717Item
 from scrapy.loader import ItemLoader
@@ -31,16 +31,23 @@ def invest_records_list(response, s1, s2='tr', s3='td::text'):
     return result
 
 
-class CrawlSpider(CrawlSpider):
+class CrawlSpider(Spider):
     name = '8717'
     web_name = '明郡融资租赁'
     # allowed_domains = ['http://www.mjcd168.com']
-    start_urls = ['http://www.mjcd168.com/invest/index.html?p=1']
-
+    start_urls = ['http://www.mjcd168.com/invest/index.html?p={}'.format(x) for x in range(1, 4)]
+    '''
     rules = (
         Rule(LinkExtractor(allow=('invest/index\.html\?p=\d+',), restrict_xpaths=('//*[contains(text(),"下一页")]',))),
         Rule(LinkExtractor(allow=('/invest/\d+\.html',)), callback='parse_item')
     )
+    '''
+
+    def parse(self, response):
+        le = LinkExtractor(allow=('/invest/\d+\.html',))
+        for l_url in le.extract_links(response):
+            url = l_url.url
+            yield scrapy.Request(url, callback=self.parse_item)
 
     def parse_item(self, response):
         url = response.url

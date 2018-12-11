@@ -4,7 +4,7 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-import re
+import re, requests
 import pymongo
 from scrapy.exceptions import DropItem
 
@@ -39,5 +39,31 @@ class SaveMongodb(object):
         db = client.p2p
         collection = db.p8717
         collection.insert_one(dict(item))
-        print(item['title'], '-- is ok')
+        print(item['url'], '-- is ok')
+        return item
+
+
+class Publish34(object):
+    def process_item(self, item, spider):
+        entry = dict(item)
+        post = {'title': "title", 'borrowid': "item_code", 'siteid': 'web_code',
+                'lastpostdate': 'end', 'daystr': 'period', 'typeimg': '类型图片',
+                'posttype': '回复类型', 'postdata': 'invest_records', 'money': 'amount',
+                'rate': 'rate', 'senddate': 'start', 'username': 'loaner_info',
+                'jiangli': '投标奖励', 'jianglimoney': '奖励金额', 'ratetype': '利率类型',
+                'repayment_type': 'pay_type', 'borrow_url': 'url', 'sex': '性别',
+                'age': '年龄', 'industry': '所属行业', 'df': '所在地', 'organization': '发布机构',
+                'borrow_use': 'loan_using', 'borrower_type': '借款类别', 'borrow_info': 'loan_info', }
+        reg = re.compile('ok')
+        post_uri = 'http://101.201.75.34/curl/insert.php'
+        publish_data = {}
+        for key, value in post.items():
+            publish_data[key] = entry.get(value, None)
+        rr = requests.post(post_uri, data=publish_data)
+        if re.search(reg, rr.text):
+            print(publish_data['title'], ' issued successfull')
+            item['a'] = 1
+        else:
+            print(publish_data['title'], ' issued failed')
+            item['a'] = 0
         return item
