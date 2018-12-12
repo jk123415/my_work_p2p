@@ -7,23 +7,22 @@
 import re, requests
 import pymongo
 from scrapy.exceptions import DropItem
-from scrapy.conf import settings
 from datetime import datetime
 
 
-class Gd8717Pipeline(object):
+class YzmSx5170Pipeline(object):
     def process_item(self, item, spider):
-        period = re.subn(' ', "", item['period'])
-        item['period'] = re.search('借款期限：(.*?)$', period[0]).group(1)
+        period = re.subn('[\r\n\t\s]', "", item['period'])
+        item['period'] = re.search('^(.*?)借款期限', period[0]).group(1)
 
-        rate = re.search('年化收益：(.*?)%', item['rate']).group(1)
+        rate = re.search('^(.*?)%', item['rate']).group(1)
         item['rate'] = rate
 
-        title = item['title'].strip('\xa0')
-        item['title'] = title
+        # title = item['title'].strip('\xa0')
+        # item['title'] = title
 
         pay_type = item['pay_type']
-        if re.search('每月还息到期还本', pay_type):
+        if re.search('到期还本', pay_type):
             item['pay_type'] = '4'
         else:
             item['pay_type'] = '0'
@@ -53,22 +52,6 @@ class Gd8717Pipeline(object):
             spider.log_doc.append({'msg': item['url'] + "-start采集错误", 'time': str(datetime.now())})
             # print('时间采集错误')
             raise DropItem
-        return item
-
-
-class SaveMongodb(object):
-    def __init__(self):
-        host = settings['HOST']
-        port = settings['PORT']
-        dbName = settings['MONGODB_DBNAME']
-        client = pymongo.MongoClient(host=host, port=port)
-        tdb = client[dbName]
-        self.post = tdb[settings['MONGODB_DOCNAME']]
-
-    def process_item(self, item, spider):
-        bookInfo = dict(item)
-        self.post.insert_one(bookInfo)
-        print(item['url'], '-- is ok')
         return item
 
 

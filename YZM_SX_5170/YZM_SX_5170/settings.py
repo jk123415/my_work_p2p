@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for GD_8717 project
+# Scrapy settings for YZM_SX_5170 project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -8,23 +8,37 @@
 #     https://doc.scrapy.org/en/latest/topics/settings.html
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
+# splash settings
+SPLASH_URL = 'http://192.168.99.100:8050'
+DOWNLOADER_MIDDLEWARES = {
+    #'YZM_SX_5170.middlewares.YzmSx5170DownloaderMiddleware': 543,
+    'scrapy_splash.SplashCookiesMiddleware': 723,
+    'scrapy_splash.SplashMiddleware': 725,
+    'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
+}
+SPIDER_MIDDLEWARES = {
+    'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
+}
+DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
+HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
 
-BOT_NAME = 'GD_8717'
-# MONGODB SETING
+# MONGONDB SETTING
 MONGO_URI = 'mongodb://localhost:27017/'
 MONGO_DATABASE = 'p2p'
-MONGODB_DOCNAME = 'p8717'
-MONGODB_LOG_DOCNAME = 'p8717_log'
+MONGODB_DOCNAME = 'p5170'
+MONGODB_LOG_DOCNAME = 'p5170_log'
 
-SPIDER_MODULES = ['GD_8717.spiders']
-NEWSPIDER_MODULE = 'GD_8717.spiders'
+BOT_NAME = 'YZM_SX_5170'
 
-LOG_ENABLED = True
+SPIDER_MODULES = ['YZM_SX_5170.spiders']
+NEWSPIDER_MODULE = 'YZM_SX_5170.spiders'
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-# USER_AGENT = 'GD_8717 (+http://www.yourdomain.com)'
+# USER_AGENT = 'YZM_SX_5170 (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
+
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
 
@@ -37,7 +51,7 @@ ROBOTSTXT_OBEY = False
 # CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-# COOKIES_ENABLED = False
+COOKIES_ENABLED = True
 
 # Disable Telnet Console (enabled by default)
 # TELNETCONSOLE_ENABLED = False
@@ -51,14 +65,14 @@ ROBOTSTXT_OBEY = False
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 # SPIDER_MIDDLEWARES = {
-#    'GD_8717.middlewares.Gd8717SpiderMiddleware': 543,
+#    'YZM_SX_5170.middlewares.YzmSx5170SpiderMiddleware': 543,
 # }
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-DOWNLOADER_MIDDLEWARES = {
-    'GD_8717.middlewares.Gd8717DownloaderMiddleware': 543,
-}
+# DOWNLOADER_MIDDLEWARES = {
+#    'YZM_SX_5170.middlewares.YzmSx5170DownloaderMiddleware': 543,
+# }
 
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html
@@ -69,9 +83,9 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'GD_8717.pipelines.Gd8717Pipeline': 300,
-    'GD_8717.pipelines.Publish34': 350,
-    'GD_8717.pipelines.MongoPipeline': 400,
+    'YZM_SX_5170.pipelines.YzmSx5170Pipeline': 300,
+    #'YZM_SX_5170.pipelines.Publish34': 350,
+    #'YZM_SX_5170.pipelines.MongoPipeline': 400,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

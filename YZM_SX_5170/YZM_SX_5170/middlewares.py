@@ -5,12 +5,11 @@
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
-from datetime import datetime
 from scrapy import signals
 from scrapy.exceptions import IgnoreRequest
+from datetime import datetime
 
-
-class Gd8717SpiderMiddleware(object):
+class YzmSx5170SpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the spider middleware does not modify the
     # passed objects.
@@ -58,7 +57,7 @@ class Gd8717SpiderMiddleware(object):
         spider.logger.info('Spider opened: %s' % spider.name)
 
 
-class Gd8717DownloaderMiddleware(object):
+class YzmSx5170DownloaderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the downloader middleware does not modify the
     # passed objects.
@@ -69,16 +68,6 @@ class Gd8717DownloaderMiddleware(object):
         s = cls()
         crawler.signals.connect(s.spider_opened, signal=signals.spider_opened)
         return s
-
-    '''
-    def __init__(self):
-        host = settings['HOST']
-        port = settings['PORT']
-        dbName = settings['MONGODB_DBNAME']
-        client = MongoClient(host=host, port=port)
-        tdb = client[dbName]
-        self.post = tdb[settings['MONGODB_DOCNAME']]
-    '''
 
     def process_request(self, request, spider):
         url = request.url
@@ -98,6 +87,7 @@ class Gd8717DownloaderMiddleware(object):
         # - or return a Request object
         # - or raise IgnoreRequest: process_exception() methods of
         #   installed downloader middleware will be called
+        return None
 
     def process_response(self, request, response, spider):
         # Called with the response returned from the downloader.

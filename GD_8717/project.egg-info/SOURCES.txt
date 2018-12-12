@@ -1,0 +1,13 @@
+setup.py
+GD_8717/__init__.py
+GD_8717/items.py
+GD_8717/middlewares.py
+GD_8717/pipelines.py
+GD_8717/settings.py
+GD_8717/spiders/__init__.py
+GD_8717/spiders/crawl.py
+project.egg-info/PKG-INFO
+project.egg-info/SOURCES.txt
+project.egg-info/dependency_links.txt
+project.egg-info/entry_points.txt
+project.egg-info/top_level.txt
