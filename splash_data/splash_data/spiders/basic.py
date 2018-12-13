@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-import scrapy, re
+import scrapy
+import re
 from scrapy_splash import SplashRequest
 from splash_data.items import SplashDataItem
 from scrapy.loader import ItemLoader
@@ -38,7 +39,8 @@ end
 
 
 class BasicSpider(scrapy.Spider):
-    name = 'basic'
+    name = '7734'
+    log_doc = []
     start_urls = ['https://www.fmshang.com/invest.html']
 
     def start_requests(self):
@@ -74,7 +76,8 @@ class BasicSpider(scrapy.Spider):
             result = list()
             for i in lst_tr:
                 text = i.css(selector_2).extract()
-                if text: result.append(text)
+                if text:
+                    result.append(text)
             return result
 
         def invest_p2p():
