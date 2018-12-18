@@ -1,0 +1,13 @@
+setup.py
+SX_8672/__init__.py
+SX_8672/items.py
+SX_8672/middlewares.py
+SX_8672/pipelines.py
+SX_8672/settings.py
+SX_8672/spiders/__init__.py
+SX_8672/spiders/a8672.py
+project.egg-info/PKG-INFO
+project.egg-info/SOURCES.txt
+project.egg-info/dependency_links.txt
+project.egg-info/entry_points.txt
+project.egg-info/top_level.txt

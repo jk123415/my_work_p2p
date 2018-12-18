@@ -4,80 +4,62 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-import re
-import requests
+import re, requests
 import pymongo
 from scrapy.exceptions import DropItem
 from datetime import datetime
 
 
-class Bj8491Pipeline(object):
+class Sx8672Pipeline(object):
+
     def process_item(self, item, spider):
-        title = item['title']
+        period = re.subn('[\xa0\n\s]', "", item['period'])
+        item['period'] = period[0]
 
-        time_1 = re.findall('企业贷-(\d{4})(\d{2})(\d{2})-', title)
-        try:
-            time_2 = time_1[0][0] + '-' + time_1[0][1] + '-' + time_1[0][2]
-        except Exception:
-            time_2 = str(datetime.now())
+        rate = re.subn('[\n\s\xa0]', "", item['rate'])
+        item['rate'] = re.search('^(.*?)%', rate[0]).group(1)
 
-        url = 'https://www.jiajiabank.com/' + title
+        amount = re.search('￥(.*?)元', item['amount']).group(1)
+        item['amount'] = amount
 
-        item_code = '易嘉金服-' + title
+        title = item['title'].strip('\xa0')
+        item['title'] = title
 
-        web_code = '8491'
-
-        item['start'] = time_2
-        item['end'] = time_2
-        item['url'] = url
-        item['item_code'] = item_code
-        item['web_code'] = web_code
-
-        if re.search('到期付息', item['pay_type']):
+        pay_type = item['pay_type']
+        if re.search('一次性还款', pay_type):
             item['pay_type'] = '3'
         else:
             item['pay_type'] = '0'
 
         if not item['title']:
             spider.log_doc.append({'msg': item['url'] + "-标题采集错误", 'time': str(datetime.now())})
-            # print('时间采集错误')
+            spider.logger.info('标题采集错误')
             raise DropItem
         if not item['amount']:
             spider.log_doc.append({'msg': item['url'] + "-amount采集错误", 'time': str(datetime.now())})
-            # print('时间采集错误')
+            spider.logger.info('amount采集错误')
             raise DropItem
         if not item['rate']:
             spider.log_doc.append({'msg': item['url'] + "-rate采集错误", 'time': str(datetime.now())})
-            # print('时间采集错误')
+            spider.logger.info('rate采集错误')
             raise DropItem
         if item['period']:
             pass
         else:
             spider.log_doc.append({'msg': item['url'] + "-period采集错误", 'time': str(datetime.now())})
-            # print('时间采集错误')
+            spider.logger.info('period采集错误')
             raise DropItem
-        if item['progress'] != '100%':
-            print(item['url'], '-is not done')
-            spider.log_doc.append({'msg': item['url'] + "-is not done", 'time': str(datetime.now())})
-            raise DropItem
+        #if item['progress'] != '100%':
+            #print(item['url'], '-is not done')
+            #spider.log_doc.append({'msg': item['url'] + "-is not done", 'time': str(datetime.now())})
+            #raise DropItem
         if not item['start']:
             spider.log_doc.append({'msg': item['url'] + "-start采集错误", 'time': str(datetime.now())})
-            # print('时间采集错误')
+            spider.logger.info('start采集错误')
             raise DropItem
         if not item['end']:
             spider.log_doc.append({'msg': item['url'] + "-时间采集错误", 'time': str(datetime.now())})
-            # print('时间采集错误')
-            raise DropItem
-        return item
-
-
-class Filter(object):
-    def process_item(self, item, spider):
-        title = item['title']
-        conti = spider.collection.find_one({'title': title})
-        if conti:
-            spider.log_doc.append({'msg': title + "--已经采集过", 'time': str(datetime.now())})
-            spider.logger.info('已经采集过: %s' % title)
+            spider.logger.info('时间采集错误')
             raise DropItem
         return item
 
@@ -110,20 +92,18 @@ class MongoPipeline(object):
         if spider.log_doc:
             spider.collection_log.insert_many(spider.log_doc)
         spider.client.close()
-        # print(spider.log_doc)
+        spider.logger.info(spider.log_doc)
 
     def process_item(self, item, spider):
         entry = dict(item)
         if entry:
             spider.collection.insert_one(entry)
-            # print(item['url'], '-is ok')
-            spider.log_doc.append(
-                {'msg': item['url'] + "-is ok", 'time': str(datetime.now())})
+            spider.logger.info(item['url'], '-is ok')
+            spider.log_doc.append({'msg': item['url'] + "-is ok", 'time': str(datetime.now())})
         return item
 
 
 class Publish34(object):
-
     def process_item(self, item, spider):
         entry = dict(item)
         post = {'title': "title", 'borrowid': "item_code", 'siteid': 'web_code',
@@ -141,13 +121,11 @@ class Publish34(object):
             publish_data[key] = entry.get(value, None)
         rr = requests.post(post_uri, data=publish_data)
         if re.search(reg, rr.text):
-            spider.log_doc.append(
-                {'msg': publish_data['title'] + " issued successfull", 'time': datetime.now()})
-            # print(publish_data['title'], ' issued successfull')
+            spider.log_doc.append({'msg': publish_data['title'] + " issued successfull", 'time': datetime.now()})
+            spider.logger.info(publish_data['title'], ' issued successfull')
             item['a'] = 1
         else:
-            spider.log_doc.append(
-                {'msg': publish_data['title'] + " issued failed", 'time': datetime.now()})
-            # print(publish_data['title'], ' issued failed')
+            spider.log_doc.append({'msg': publish_data['title'] + " issued failed", 'time': datetime.now()})
+            spider.logger.info(publish_data['title'], ' issued failed')
             item['a'] = 0
         return item

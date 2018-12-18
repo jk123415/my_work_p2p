@@ -1,0 +1,13 @@
+setup.py
+BJ_8491/__init__.py
+BJ_8491/items.py
+BJ_8491/middlewares.py
+BJ_8491/pipelines.py
+BJ_8491/settings.py
+BJ_8491/spiders/__init__.py
+BJ_8491/spiders/a8491.py
+project.egg-info/PKG-INFO
+project.egg-info/SOURCES.txt
+project.egg-info/dependency_links.txt
+project.egg-info/entry_points.txt
+project.egg-info/top_level.txt

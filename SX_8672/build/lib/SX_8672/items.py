@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
+
 # Define here the models for your scraped items
 #
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
+import re
 from w3lib.html import remove_tags
 from scrapy.loader.processors import Join, MapCompose, TakeFirst
+from scrapy.selector import Selector
 
 
-class Bj8491Item(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
+class Sx8672Item(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     title = scrapy.Field(
@@ -28,10 +29,10 @@ class Bj8491Item(scrapy.Item):
         input_processor=MapCompose(remove_tags),
         output_processor=Join(), )
     start = scrapy.Field(
-        input_processor=MapCompose(),
+        input_processor=MapCompose(remove_tags),
         output_processor=Join(), )
     end = scrapy.Field(
-        input_processor=MapCompose(),
+        input_processor=MapCompose(remove_tags),
         output_processor=Join(), )
     invest_records = scrapy.Field(
         output_processor=Join()
