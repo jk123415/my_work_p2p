@@ -40,21 +40,21 @@ class Bj8491Pipeline(object):
 
         if not item['title']:
             spider.log_doc.append({'msg': item['url'] + "-标题采集错误", 'time': str(datetime.now())})
-            # print('时间采集错误')
+
             raise DropItem
         if not item['amount']:
             spider.log_doc.append({'msg': item['url'] + "-amount采集错误", 'time': str(datetime.now())})
-            # print('时间采集错误')
+
             raise DropItem
         if not item['rate']:
             spider.log_doc.append({'msg': item['url'] + "-rate采集错误", 'time': str(datetime.now())})
-            # print('时间采集错误')
+
             raise DropItem
         if item['period']:
             pass
         else:
             spider.log_doc.append({'msg': item['url'] + "-period采集错误", 'time': str(datetime.now())})
-            # print('时间采集错误')
+
             raise DropItem
         if item['progress'] != '100%':
             print(item['url'], '-is not done')
@@ -62,11 +62,11 @@ class Bj8491Pipeline(object):
             raise DropItem
         if not item['start']:
             spider.log_doc.append({'msg': item['url'] + "-start采集错误", 'time': str(datetime.now())})
-            # print('时间采集错误')
+
             raise DropItem
         if not item['end']:
             spider.log_doc.append({'msg': item['url'] + "-时间采集错误", 'time': str(datetime.now())})
-            # print('时间采集错误')
+
             raise DropItem
         return item
 

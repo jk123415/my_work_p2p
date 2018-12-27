@@ -14,7 +14,7 @@ def item_code(str1, str2, exp, url=None):
         item_c = str2 + '-' + code
     except Exception:
         pass
-        # print("网址提取code错误")
+        spider.logger.info("网址提取code错误")
     else:
         result['item_code'] = item_c
         if url:
@@ -58,7 +58,7 @@ class CrawlSpider(Spider):
         progress = response.xpath('//*[contains(text(),"剩余可投")]//following-sibling::p/span/text()').extract_first()
         if not progress == "0":
             self.log_doc.append({'msg': url + " is not done", 'time': str(datetime.now())})
-            # print(url, " is not done")
+            self.logger.info(url+" is not done")
             yield None
         else:
             item = ItemLoader(item=Gd8717Item(), response=response)

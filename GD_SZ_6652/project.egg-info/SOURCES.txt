@@ -1,0 +1,13 @@
+setup.py
+GD_SZ_6652/__init__.py
+GD_SZ_6652/items.py
+GD_SZ_6652/middlewares.py
+GD_SZ_6652/pipelines.py
+GD_SZ_6652/settings.py
+GD_SZ_6652/spiders/__init__.py
+GD_SZ_6652/spiders/a6652.py
+project.egg-info/PKG-INFO
+project.egg-info/SOURCES.txt
+project.egg-info/dependency_links.txt
+project.egg-info/entry_points.txt
+project.egg-info/top_level.txt

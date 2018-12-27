@@ -1,0 +1,13 @@
+setup.py
+LL_2028/__init__.py
+LL_2028/items.py
+LL_2028/middlewares.py
+LL_2028/pipelines.py
+LL_2028/settings.py
+LL_2028/spiders/__init__.py
+LL_2028/spiders/basic.py
+project.egg-info/PKG-INFO
+project.egg-info/SOURCES.txt
+project.egg-info/dependency_links.txt
+project.egg-info/entry_points.txt
+project.egg-info/top_level.txt

@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a286b4c4-2025-48d2-87b3-b20088f3c4a3" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../BJ_8491/BJ_8491/items.py" beforeDir="false" afterPath="$PROJECT_DIR$/../BJ_8491/BJ_8491/items.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BJ_8491/BJ_8491/pipelines.py" beforeDir="false" afterPath="$PROJECT_DIR$/../BJ_8491/BJ_8491/pipelines.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BJ_8491/BJ_8491/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/../BJ_8491/BJ_8491/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BJ_8491/BJ_8491/spiders/a8491.py" beforeDir="false" afterPath="$PROJECT_DIR$/../BJ_8491/BJ_8491/spiders/a8491.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BJ_8491/scrapy.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/../BJ_8491/scrapy.cfg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../GD_5176/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../GD_5176/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,9 +14,11 @@
     <session id="-678768061">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
+          <entry key="project.closed" value="3" />
           <entry key="project.open.time.2" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.open.time.25" value="1" />
+          <entry key="project.open.time.8" value="1" />
+          <entry key="project.opened" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -99,17 +96,6 @@
               <item name="SX_8672" type="b2602c69:ProjectViewProjectNode" />
               <item name="SX_8672" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="SX_8672" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SX_8672" type="462c0819:PsiDirectoryNode" />
-              <item name="SX_8672" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SX_8672" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SX_8672" type="462c0819:PsiDirectoryNode" />
-              <item name="SX_8672" type="462c0819:PsiDirectoryNode" />
-              <item name="spiders" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -150,15 +136,9 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <layout>
-      <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19288956" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19894099" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Python Console" />
-      <window_info anchor="bottom" id="Terminal" weight="0.45335516" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -166,11 +146,17 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="SciView" />
-      <window_info anchor="right" id="Database" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.45335516" />
+      <window_info anchor="bottom" id="Python Console" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" />
+      <window_info anchor="right" id="Database" order="4" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -191,9 +177,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
           <caret line="77" column="23" lean-forward="true" selection-start-line="77" selection-start-column="23" selection-end-line="77" selection-end-column="23" />
-          <folding>
-            <element signature="e#169#195#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -215,10 +198,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1174">
           <caret line="101" selection-start-line="101" selection-end-line="101" />
-          <folding>
-            <element signature="e#293#620#0" />
-            <element signature="e#690#864#0" />
-          </folding>
         </state>
       </provider>
     </entry>

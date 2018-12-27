@@ -70,14 +70,14 @@ class Sqlite3Database(object):
         conn = spider.conn
         db = conn.cursor()
         db.execute('''SELECT {} FROM Content WHERE 已发 is null '''.format(colculmus, ))
-        # print(db.fetchall())
+        spider.logger.info(db.fetchall())
         lst = db.fetchall()
         if not lst:
             print('Need post data is 0')
         else:
             for postval in lst:
                 publish_data = dict(zip(post.keys(), postval))
-                # print(publish_data)
+                spider.logger.info(publish_data)
                 rr = requests.post(post_uri, data=publish_data)
                 if re.search(reg, rr.text):
                     print(publish_data['title'], ' issued successfull')

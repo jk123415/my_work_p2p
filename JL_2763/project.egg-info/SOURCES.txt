@@ -1,0 +1,13 @@
+setup.py
+JL_2763/__init__.py
+JL_2763/items.py
+JL_2763/middlewares.py
+JL_2763/pipelines.py
+JL_2763/settings.py
+JL_2763/spiders/__init__.py
+JL_2763/spiders/a2763.py
+project.egg-info/PKG-INFO
+project.egg-info/SOURCES.txt
+project.egg-info/dependency_links.txt
+project.egg-info/entry_points.txt
+project.egg-info/top_level.txt

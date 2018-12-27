@@ -78,7 +78,7 @@ class SplashDataDownloaderMiddleware(object):
             return None
         else:
             spider.log_doc.append({'msg': url + "--已经采集过", 'time': str(datetime.now())})
-            # print(url, "--已经采集过")
+            spider.logger.info(url+"--已经采集过")
             raise IgnoreRequest
         # Must either:
         # - return None: continue processing this request

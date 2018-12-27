@@ -98,7 +98,7 @@ class MongoPipeline(object):
         entry = dict(item)
         if entry:
             spider.collection.insert_one(entry)
-            spider.logger.info(item['url'], '-is ok')
+            spider.logger.info(item['url'] + '-is ok')
             spider.log_doc.append({'msg': item['url'] + "-is ok", 'time': str(datetime.now())})
         return item
 

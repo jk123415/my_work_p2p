@@ -68,13 +68,13 @@ class MongoPipeline(object):
         if spider.log_doc:
             spider.collection_log.insert_many(spider.log_doc)
         spider.client.close()
-        # print(spider.log_doc)
+        spider.logger.info(spider.log_doc)
 
     def process_item(self, item, spider):
         entry = dict(item)
         if entry:
             spider.collection.insert_one(entry)
-            # print(item['url'], '-is ok')
+            spider.logger.info(item['url'] + '-is ok')
             spider.log_doc.append({'msg': item['url'] + "-is ok", 'time': str(datetime.now())})
         return item
 
@@ -98,11 +98,11 @@ class Publish34(object):
         rr = requests.post(post_uri, data=publish_data)
         if re.search(reg, rr.text):
             spider.log_doc.append({'msg': publish_data['title'] + " issued successfull", 'time': datetime.now()})
-            # print(publish_data['title'], ' issued successfull')
+            spider.logger.info(publish_data['title'], ' issued successfull')
             item['a'] = 1
         else:
             spider.log_doc.append({'msg': publish_data['title'] + " issued failed", 'time': datetime.now()})
-            # print(publish_data['title'], ' issued failed')
+            spider.logger.info(publish_data['title'], ' issued failed')
             item['a'] = 0
         return item
 

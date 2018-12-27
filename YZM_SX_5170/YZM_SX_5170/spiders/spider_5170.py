@@ -21,13 +21,28 @@ function main(splash, args)
   assert(splash:wait(0.5))
   local commit = splash:select('#login-btn')
   commit:mouse_click{}
-  assert(splash:wait(2))
-  assert(splash:go("https://www.guangdiancaifu.com/"))
+  assert(splash:wait(1))
+  assert(splash:go("https://www.guangdiancaifu.com/invest/list"))
+  assert(splash:wait(1))
+
   return {
     html = splash:html(),
     --png = splash:png(),
     --har = splash:har(),
     cookies = splash:get_cookies()
+  }
+end
+'''
+
+lua = '''
+function main(splash, args)
+  splash:init_cookies(splash.args.cookies)
+  assert(splash:go(args.url))
+  assert(splash:wait(0.5))
+  return {
+    html = splash:html(),
+    --png = splash:png(),
+    --har = splash:har(),
   }
 end
 '''
@@ -71,13 +86,25 @@ class BasicSpider(scrapy.Spider):
 
     def parse(self, response):
         cookies = response.data['cookies']
-        url = 'https://www.guangdiancaifu.com/invest/list'
         # 采集页数
+        '''
         post_val = [{"currentPage": str(i), "priceRangeIndex": "0", "interestRangeIndex": "0", "termCountIndex": "0",
-                     "loanStatusIndex": "0", "loanTypeIndex": "0"} for i in range(1, 2)]
+                     "loanStatusIndex": "0", "loanTypeIndex": "0"} for i in range(1, 5)]
         for pv in post_val:
             yield scrapy.FormRequest(url, formdata=pv, cookies=cookies, callback=self.parse_list,
                                      meta={'cookiejar': 1})
+        '''
+        url_list = response.css('#hot-tabs-content1 a::attr(href)').extract()
+
+        for url in url_list:
+            if url != '#':
+                href = 'https://www.guangdiancaifu.com' + url
+            # yield SplashRequest(href, self.item, endpoint='execute', args={'lua_source': lua
+            #'cookies': cookies})
+                yield SplashRequest(url=href, callback=self.parse_item, endpoint='execute', args={'lua_source': lua,
+                                                                                                  'cookies': cookies})
+            else:
+                return None
 
     def parse_list(self, response):
         lk = LinkExtractor(allow=('/loan/'))
@@ -111,7 +138,9 @@ class BasicSpider(scrapy.Spider):
         i_v = []
         invest_records_temp = '{{username={lst[0]}|rate=-1|postmoney={lst[2]}|money={lst[2]}|postdate={lst[1]}|status=全部通过}}'
         invest_records_format = ""
-        tr = response.css('.invest-table').xpath('./tr')
+        tr = response.css('.invest-table').css('tr')
+        if not tr:
+            tr = response.css('.tou.info-tab-main').css('tr')
         try:
             for i in tr:
                 lst = i.css('td::text').extract()
@@ -119,7 +148,7 @@ class BasicSpider(scrapy.Spider):
             for n in i_v:
                 invest_records_format += invest_records_temp.format(lst=n)
             item.add_value('invest_records', invest_records_format)
-            item.add_value('start', i_v[0][1])
+            item.add_value('start', i_v[1][1])
             item.add_value('end', i_v[-1][1])
         except Exception:
             print(url, 'invest records is error')
