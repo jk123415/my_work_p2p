@@ -124,15 +124,15 @@ class BasicSpider(scrapy.Spider):
         item.add_value('url', url)
         item.add_value('item_code', item_list.get('item_code'))
         item.add_xpath('title', '//title/text()')
-        item.add_xpath('amount', '//*[contains(text(),"融资金额")]')
-        item.add_xpath('rate', '//*[contains(text(),"年利率")]/..')
-        item.add_xpath('period', '//*[contains(text(),"个月")]/..')
+        item.add_css('amount', "p[style='text-align: left;']")
+        item.add_xpath('rate', "//ul[@class='left-1-ul']//li[2]//p[1]")
+        item.add_xpath('period', "//ul[@class='left-1-ul']//li[3]//p[1]")
         item.add_xpath(
             'loan_using', '//*[contains(text(),"资金用途")]/following-sibling::div[1]/p/text()')
         # item.add_xpath('loaner_info', '//*[@id="userName"]')
-        item.add_xpath('pay_type', '//*[contains(text(),"还款方式")]/text()')
+        item.add_css('pay_type', '.left-1-ol span:nth-child(1)')
         item.add_xpath(
-            'progress', '//div[@class="colu_t"]/following-sibling::span[1]/text()')
+            'progress', "//ol[@class='left-1-ol']//li[2]/span/text()")
 
         # invest records
         i_v = []

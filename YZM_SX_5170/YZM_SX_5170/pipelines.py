@@ -14,12 +14,13 @@ class YzmSx5170Pipeline(object):
 
     def process_item(self, item, spider):
         period = re.subn('[\r\n\t\s]', "", item['period'])
-        item['period'] = re.search('^(.*?)借款期限', period[0]).group(1)
+        item['period'] = re.search('借款期限(.*?)$', period[0]).group(1)
 
         rate = re.subn('[\r\n\t\s]', "", item['rate'])
-        item['rate'] = re.search('^(.*?)%', rate[0]).group(1)
+        item['rate'] = re.search('预期年利率(.*?)%', rate[0]).group(1)
 
-        amount = re.search('^(.*?)万元融资金额', item['amount']).group(1)
+        amount = re.subn('[\r\n\t\s]', "", item['amount'])[0]
+        amount = re.search('项目金额(.*?)万元', amount).group(1)
         item['amount'] = str(float(amount) * 10000)
 
         # title = item['title'].strip('\xa0')
