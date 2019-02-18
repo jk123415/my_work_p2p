@@ -18,14 +18,15 @@ class SzGongshangxinyongCollectionPipeline(object):
     # template_str template: 限制原因：{arr[0]}|限制时间：{arr[1]}|
     def regex_loop_match(self, tar_str, regex_exp_str, template_str):
         if tar_str:
+            string = re.subn("[\r\n\t]","",tar_str)[0]
             result = ""
             regex_exp = re.compile(regex_exp_str)
-            lst = regex_exp.findall(tar_str)
+            lst = regex_exp.findall(string)
             try:
                 for tup in lst:
                     temporary_a = template_str.format(arr=tup)
                     temporary_b = remove_tags(temporary_a)
-                    temporary_c = re.subn("[\t\r\n\s]", "", temporary_b)
+                    temporary_c = re.subn("\s", "", temporary_b)
                     result = result+ temporary_c[0]
             except Exception:
                 return "regex_loop_match 方法出错"
@@ -52,8 +53,8 @@ class SzGongshangxinyongCollectionPipeline(object):
         if isinstance(value, list) and value:
             temporary_a = '|'.join(value)
             return temporary_a
-        elif:
-            
+        elif isinstance(value, str) and value:
+            return str
         else:
             return ""
 
@@ -114,8 +115,8 @@ class SzGongshangxinyongCollectionPipeline(object):
         # 股东名称
         shareholder = item['shareholder']
         if shareholder:
-            shareholder_regex_exp_str = '<tr>[\s\S]*?<td align="left" style="height:22px;">([\s\S]*?)</a></td><td align="left" style="height:22px;">([\s\S]*?)</td><td align="left" style="height:22px;">([\s\S]*?)</td>[\s\S]*?</tr>'
-            shareholder_template_str = "{name={arr[0]}|momey={arr[1]}|rate={arr[2]}}"
+            shareholder_regex_exp_str = '<tr><td .*?>([\s\S]*?)<a .*?</a></td><td .*?>([\s\S]*?)</td><td .*?>([\s\S]*?)</td></tr>'
+            shareholder_template_str = "{{name={arr[0]}|momey={arr[1]}|rate={arr[2]}}}"
             item['shareholder'] = self.regex_loop_match(shareholder, shareholder_regex_exp_str, shareholder_template_str)
         pprint.pprint(item)
         return item

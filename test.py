@@ -81,15 +81,22 @@ owing_tax_template_str = "纳税人名称:{arr[0]}|纳税人识别号:{arr[1]}|�
 
 def regex_loop_match(tar_str, regex_exp_str, template_str):
     if tar_str:
+        string = re.subn("[\r\n\t]","",tar_str)[0]
         result = ""
         regex_exp = re.compile(regex_exp_str)
-        lst = regex_exp.findall(tar_str)
-        for tup in lst:
-            temporary_a = template_str.format(arr=tup)
-            temporary_b = remove_tags(temporary_a)
-            temporary_c = re.subn("[\t\r\n\s]", "", temporary_b)
-            result = result+ temporary_c[0]
-        return result
+        lst = regex_exp.findall(string)
+        try:
+            for tup in lst:
+                temporary_a = template_str.format(arr=tup)
+                temporary_b = remove_tags(temporary_a)
+                temporary_c = re.subn("\s", "", temporary_b)
+                result = result+ temporary_c[0]
+        except Exception:
+            return "regex_loop_match 方法出错"
+        else:
+            return result
+    else:
+        return None
 
 '''
 if limited_reason:
@@ -103,6 +110,7 @@ if limited_reason:
             limited_reason_result = limited_reason_result + remove_tags(lim_result)
         print(re.subn('[\t\r\n\s]',"",limited_reason_result)[0])
 '''
-sss = regex_loop_match(limited_reason,regex_exp_str,template_str)
 aaa = regex_loop_match(owing_tax,owing_tax_regex_exp_str,owing_tax_template_str)
 print(aaa)
+
+
