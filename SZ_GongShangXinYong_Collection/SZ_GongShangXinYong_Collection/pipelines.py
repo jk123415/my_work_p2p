@@ -108,7 +108,10 @@ class SzGongshangxinyongCollectionPipeline(object):
         if managing_partner: item['managing_partner'] = self.del_special_char(managing_partner)
         # 母公司名称
         parent_company = item['parent_company']
-        if parent_company: item['parent_company'] = self.del_special_char(parent_company)
+        if parent_company: 
+            item['parent_company'] = self.del_special_char(parent_company)
+        else:
+            item['parent_company'] = self.deal_null(parent_company)
         # 年检情况
         annual_inspection_situation = item['annual_inspection_situation']
         if annual_inspection_situation: item['annual_inspection_situation'] = self.del_special_char(annual_inspection_situation)
@@ -118,6 +121,8 @@ class SzGongshangxinyongCollectionPipeline(object):
             shareholder_regex_exp_str = '<tr><td .*?>([\s\S]*?)<a .*?</a></td><td .*?>([\s\S]*?)</td><td .*?>([\s\S]*?)</td></tr>'
             shareholder_template_str = "{{name={arr[0]}|momey={arr[1]}|rate={arr[2]}}}"
             item['shareholder'] = self.regex_loop_match(shareholder, shareholder_regex_exp_str, shareholder_template_str)
+        # 变更详情
+        
         pprint.pprint(item)
         return item
 

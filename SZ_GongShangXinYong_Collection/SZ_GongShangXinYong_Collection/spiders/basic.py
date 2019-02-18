@@ -87,5 +87,26 @@ class Basicself(scrapy.Spider):
         item['annual_inspection_situation'] = response.css("body").re_first('年检情况</td>([\S\s]*?)</td>')
         # 股东名称
         item['shareholder'] = response.css("body").re_first('股东登记信息</span>([\S\s]*?)</table>')
+        # 变更信息
+        entId = response.css("body").re_first('id="hfEntId" value="(\d+?)"')
+        recdid = response.css("body").re_first('id="hfID" value="(.+?)"')
+        temporary_url_template = 'https://www.szcredit.com.cn/XY2.OutSide/GSPT/newGsptHistoryItem.aspx?ID=0&entId={}&itemId=-1&recdid={}'
+        temporary_url = temporary_url_template.format(entId, recdid)
+        reqests = scrapy.Request(url=temporary_url, callback=self.parse_change_, headers={'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+                                                                                          'Accept-Encoding':'gzip, deflate, br',
+                                                                                          'Accept-Language':'zh-CN,zh;q=0.9,en;q=0.8',
+                                                                                          'Cache-Control':'max-age=0',
+                                                                                          'Connection':'keep-alive',
+                                                                                          'Host':'www.szcredit.com.cn',
+                                                                                          'Upgrade-Insecure-Requests':'1',
+                                                                                          'User-Agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36'})
+        reqests.meta['item'] = item
 
+        yield reqests
+
+    def parse_change_(self,response):
+        print(response.url)
+        item = response.meta['item']
+        change_details = response.css('body').get()
+        item['change_details'] = change_details
         yield item

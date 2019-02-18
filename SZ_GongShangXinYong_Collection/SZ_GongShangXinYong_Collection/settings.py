@@ -17,7 +17,7 @@ NEWSPIDER_MODULE = 'SZ_GongShangXinYong_Collection.spiders'
 MONGODB_URL = 'mongodb://localhost:27017/'
 MONGODB_DB = 'SZ_GSXY_CODE'
 
-
+HTTPERROR_ALLOWED_CODES = [400]
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'SZ_GongShangXinYong_Collection (+http://www.yourdomain.com)'
 
