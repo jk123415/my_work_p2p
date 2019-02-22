@@ -8,6 +8,7 @@ import time
 from scrapy import signals
 from selenium import webdriver
 from scrapy.http import HtmlResponse
+from scrapy.exceptions import IgnoreRequest
 
 
 class SeletestSpiderMiddleware(object):
@@ -78,10 +79,15 @@ class SeletestDownloaderMiddleware(object):
         # Called for each request that goes through the downloader
         # middleware.
         url = request.url
-        spider.logger.debug('chrome is Starting')
-        self.chrome.get(url)
-        time.sleep(1)
-        return HtmlResponse(url=url, body=self.chrome.page_source, request=request, encoding='utf-8', status=200)
+        jud = spider.col.find_one({url:url})
+        if jud:
+            spider.logger.info(url + '---已经采集过')
+            raise IgnoreRequest()
+        else:
+            spider.logger.debug('chrome is Starting')
+            self.chrome.get(url)
+            time.sleep(1)
+            return HtmlResponse(url=url, body=self.chrome.page_source, request=request, encoding='utf-8', status=200)
         # Must either:
         # - return None: continue processing this request
         # - or return a Response object

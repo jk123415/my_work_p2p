@@ -9,7 +9,7 @@ from w3lib.html import remove_tags
 from scrapy.loader.processors import Join, MapCompose, TakeFirst
 
 
-class Gd5176Item(scrapy.Item):
+class SeletestItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     # define the fields for your item here like:
