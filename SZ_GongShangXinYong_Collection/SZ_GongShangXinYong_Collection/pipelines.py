@@ -122,7 +122,8 @@ class SzGongshangxinyongCollectionPipeline(object):
             shareholder_template_str = "{{name={arr[0]}|momey={arr[1]}|rate={arr[2]}}}"
             item['shareholder'] = self.regex_loop_match(shareholder, shareholder_regex_exp_str, shareholder_template_str)
         # 变更详情
-        
+        change_details = item['change_details']
+        item['change_details'] = self.del_special_char(change_details)
         pprint.pprint(item)
         return item
 
