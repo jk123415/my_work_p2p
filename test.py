@@ -1,3 +1,4 @@
+"""
 import time
 from selenium import webdriver
 import selenium.webdriver.chrome.service as service
@@ -9,3 +10,9 @@ driver.get('https://wap.xiaogelicai.com/pro_det?borrowId=1508');
 print(driver.page_source)
 time.sleep(2) # Let the user actually see something!
 driver.close()
+"""
+import time
+from scrapy.http import Request
+
+print(help(time))
+print(time.year())
